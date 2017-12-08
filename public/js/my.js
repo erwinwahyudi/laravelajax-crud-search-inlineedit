@@ -49,7 +49,7 @@ $(document).ready(function() {
 
     
     // block tambah data button ADD
-        $("#cari").keypress( function(e) {
+        $("#cari,#priceid,#totalid").keypress( function(e) {
             // var name = $("#nameid").val();
             // console.log(nm);
             if(e.which == 13) 
