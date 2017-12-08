@@ -36,14 +36,14 @@
 						<input type="text" class="form-control" id="totalid" name="total" placeholder="Enter total" required>
 						<span id="results_count"></span>
 					</div>
-					<div class="col-md-2">
+					{{--  <div class="col-md-2">
 						<button class="btn btn-primary" type="submit" id="add">
 							<span class="glyphicon glyphicon-plus"></span> ADD
 						</button>	
 
 						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 						
-					</div>
+					</div>  --}}
 				</div>
 				{{ csrf_field() }}
 			<!-- ./tambah data baru -->

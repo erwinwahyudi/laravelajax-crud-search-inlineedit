@@ -49,33 +49,38 @@ $(document).ready(function() {
 
     
     // block tambah data button ADD
-        $("#add").click( function() {
+        $("#cari").keypress( function(e) {
             // var name = $("#nameid").val();
             // console.log(nm);
-            $.ajax({
-                type: 'post',
-                url: '/item/create',
-                data: {
-                    '_token': $('input[name=_token]').val(),
-                    'name': $("#nameid").val(),
-                    'price': $('#priceid').val(),
-                    'total': $('#totalid').val(),
-                },
-                success: function(data) {
-                    $("#table").prepend('<tr class="item-'+ data.id +'">'+
-                            '<td><div class="alrt" style="color:green"><b>'+ data.id +'</b></div></td>'+
-                            '<td><input class="form-control item_name" name="item_name" value="'+ data.name +'" /></td>'+
-                            '<td><input class="form-control item_price" name="item_price" value="'+ data.price +'" /></td>'+
-                            '<td><input class="form-control item_total" name="item_total" value="'+ data.total +'" /></td>'+
-                            '<td><button id="edit-item" class="edit-item btn btn-info" data-id="'+ data.id +'" data-name="">'+
-                                    '<span class="glyphicon glyphicon-edit"></span> Edit'+
-                                '</button>&nbsp;'+
-                                '<button class="delete-item btn btn-danger" data-id="'+ data.id +'" data-name="'+ data.name +'">'+
-                                    '<span class="glyphicon glyphicon-trash"></span> Delete'+
-                                '</button></td>'+
-                        '</tr>');
-                },
-            });
+            if(e.which == 13) 
+            {
+                $.ajax({
+                    type: 'post',
+                    url: '/item/create',
+                    data: {
+                        '_token': $('input[name=_token]').val(),
+                        'name': $("#nameid").val(),
+                        'price': $('#priceid').val(),
+                        'total': $('#totalid').val(),
+                    },
+                    success: function(data) {
+                        $("#table").prepend('<tr class="item-'+ data.id +'">'+
+                                '<td><div class="alrt" style="color:green"><b>'+ data.id +'</b></div></td>'+
+                                '<td><input class="form-control item_name" name="item_name" value="'+ data.name +'" /></td>'+
+                                '<td><input class="form-control item_price" name="item_price" value="'+ data.price +'" /></td>'+
+                                '<td><input class="form-control item_total" name="item_total" value="'+ data.total +'" /></td>'+
+                                '<td><button id="edit-item" class="edit-item btn btn-info" data-id="'+ data.id +'" data-name="">'+
+                                        '<span class="glyphicon glyphicon-edit"></span> Edit'+
+                                    '</button>&nbsp;'+
+                                    '<button class="delete-item btn btn-danger" data-id="'+ data.id +'" data-name="'+ data.name +'">'+
+                                        '<span class="glyphicon glyphicon-trash"></span> Delete'+
+                                    '</button></td>'+
+                            '</tr>');
+                    },
+                });
+            } else {
+                console.log('bukan enter');
+            }
         });
     // ./ block tambah data button ADD
 
