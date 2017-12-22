@@ -17,7 +17,7 @@ class ItemsTableSeeder extends Seeder
             Item::create([
                 'name'  => $faker->city,
                 'price' => $faker->randomNumber(6),
-                'total' => $faker->randomNumber(2),
+                'quantity' => $faker->randomNumber(2),
 
             ]);
         }
