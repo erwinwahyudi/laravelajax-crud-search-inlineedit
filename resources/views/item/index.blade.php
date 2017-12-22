@@ -1,6 +1,7 @@
 <html>
 
 <head>
+	<meta name="csrf-token" content="{{ csrf_token() }}" >
 	<title>
 		Laravel JQuery Ajax CRUD with Search Autocomplete and Inline Edit - by Erwin Wahyudi
 	</title>
@@ -15,6 +16,23 @@
 			!important/* Aligning all the data to center */
 		}
 		
+		.kecilS {
+			width: 60px;
+		}
+	
+		.kecilM {
+			width: 80px;
+		}
+
+		.kecilL {
+			width: 150px;
+		}
+
+		#sum_total {
+			color: #dc3545;
+			font-size: 20px;
+		}
+		
 	</style>
 
 </head>
@@ -25,25 +43,31 @@
     <div class="container">
 			<!-- tambah data baru -->
 				<div class="form-group row add">
-					<div class="col-md-4">
+					<div class="col-md-2">
 						<input type="text" class="form-control" id="cari" placeholder="Enter name" required>
 						<input type="hidden" name="name" id="nameid">
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-2">
 						<input type="text" class="form-control" id="priceid" name="price" placeholder="Enter price" required>
 					</div>
+					<div class="col-md-2">
+						<input type="number" class="form-control" id="quantityid" name="quantity" placeholder="Enter quantity" required>
+					</div>
 					<div class="col-md-3">
-						<input type="text" class="form-control" id="totalid" name="total" placeholder="Enter total" required>
+						<input type="text" class="form-control" id="discountid" name="discount" placeholder="Enter discount" required>
+					</div>
+					<div class="col-md-3">
+						<input type="text" class="form-control" id="totalid" name="total" placeholder="Enter total" disabled>
 						<span id="results_count"></span>
 					</div>
-					<div class="col-md-2">
+					{{--  <div class="col-md-2">  --}}
 						{{--  <button class="btn btn-primary" type="submit" id="add">
 							<span class="glyphicon glyphicon-plus"></span> ADD
 						</button>	
 
 						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>  --}}
 						
-					</div>
+					{{--  </div>  --}}
 				</div>
 				{{ csrf_field() }}
 			<!-- ./tambah data baru -->
@@ -56,6 +80,8 @@
 								<th class="text-center">#</th>
 								<th class="text-center">Name</th>
 								<th class="text-center">Price</th>
+								<th class="text-center">Quantity</th>
+								<th class="text-center">Discount</th>
 								<th class="text-center">Total</th>
 								<th class="text-center">Actions</th>
 							</tr>
@@ -64,22 +90,32 @@
 							<div ></div>
 						</tbody> -->
 						<tbody>
-						@foreach($items as $item)
-							<tr class="item-{{ $item->id }}">
-								<td><div class="alrt">{{ $item->id }}</div></td>
-								<td><input class="form-control item_name" name="item_name" value="{{ $item->name }}" /></td>
-								<td><input class="form-control item_price" name="item_price" value="{{ $item->price }}" /></td>
-								<td><input class="form-control item_total" name="item_total" value="{{ $item->total }}" /></td>
-								<td><button id="edit-item" class="edit-item btn btn-info" data-id="{{ $item->id }}"
+						<?php $no=1; ?>
+						@foreach($charts as $chart)
+							<tr class="item-{{ $chart->id }}">
+								<td><div class="alrt">{{ $chart->id }}</div></td>
+								<td><input class="form-control item_name" name="item_name" value="{{ $chart->name }}" disabled/></td>
+								<td ><input class="form-control kecilL item_price" name="item_price" value="{{ $chart->price }}" /></td>
+								<td ><input class="form-control kecilS item_quantity" name="item_quantity" value="{{ $chart->quantity }}" /></td>
+								<td ><input class="form-control kecilL item_discount" name="item_discount" value="{{ $chart->discount }}" /></td>
+								<td ><input class="form-control kecilL item_total" name="item_total" value="{{ $chart->total }}" disabled /></td>
+								<td>
+									{{--  <button id="edit-item" class="edit-item btn btn-info" data-id="{{ $chart->id }}"
 										data-name="">
 										<span class="glyphicon glyphicon-edit"></span> Edit
-									</button>
+									</button>  --}}
 									<button class="delete-item btn btn-danger"
-										data-id="{{ $item->id }}" data-name="{{ $item->name }}">
-										<span class="glyphicon glyphicon-trash"></span> Delete
+										data-id="{{ $chart->id }}" data-name="{{ $chart->name }}">
+										<span class="glyphicon glyphicon-trash"></span> X
 									</button></td>
-							</tr>
+							</tr>							
 						@endforeach
+
+							<tr>
+								<td></td> <td></td> <td></td> <td></td>
+								<td style="text-align:right">Total : </td>
+								<td><b> <div id="sum_total"> {{ $get_total }} </div> </b></td>
+							</tr>
 						</tbody>
 					</table>
 				</div>

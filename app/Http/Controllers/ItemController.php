@@ -5,68 +5,49 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Item;
+use App\Chart;
+use DB;
 
 class ItemController extends Controller
 {
-    public function index()
-    {
-        $items = Item::limit(10)->orderBy('id', 'desc')->get();
-        return view('item.index', compact('items'));
-    }
 
-    public function getitem()
-    {
-        $items = Item::limit(10)->orderBy('id', 'desc')->get();
-        return response()->json($items);
-    }
-
+    ######## BLOCK ITEM ############
     public function search(Request $request)
     {        
         $term = $request->get('term');
         
-        $items = Item::where('name', 'LIKE', '%'.$term.'%')->limit(5)->get();
+        $items = Item::where('name', 'LIKE', '%'.$term.'%')->limit(10)->get();
         
         $getItems = [];
         foreach ($items as $item) {
             $getItems[] = [
-                            'id'    => $item->id, 
-                            'name'  => $item->name,
-                            'label' => $item->name." | price:".$item->price." | total: ".$item->total,
-                            'price' => $item->price,
-                            'total' => $item->total,
+                            'id'        => $item->id, 
+                            'name'      => $item->name,
+                            'label'     => $item->name." | price:".$item->price." | quantity: ".$item->quantity,
+                            'price'     => $item->price,
+                            'quantity'  => $item->quantity,
                           ];
         }
 
         return response()->json($getItems);
     }
+    ######## BLOCK ITEM ############
 
-    public function create(Request $request)
+    public function index()
     {
-        $item = new Item();
-        $item->name     = $request->name;
-        $item->price    = $request->price;
-        $item->total    = $request->total;
-        $item->save();
+        // tampilkan data dari chart
+        $charts = Chart::orderBy('id', 'desc')->get();
 
-        return response()->json($item);
+        // hitung total chart
+        $get_total = DB::table('chart')->sum('total');
+
+        return view('item.index', compact('charts', 'get_total'));
     }
 
-    public function edit(Request $request)
+    public function getitem()
     {
-        $item = Item::find($request->id);
-        $item->name     = $request->name;
-        $item->price    = $request->price;
-        $item->total    = $request->total;
-        $item->save();
-
-        return response()->json($item);
-    }
-
-    public function delete(Request $request)
-    {
-        $id = $request->id;
-        Item::find($id)->delete();
-
-        return response()->json();
-    }
+        $charts = Chart::limit(10)->orderBy('id', 'desc')->get();
+        return response()->json($charts);
+    }    
+    
 }
